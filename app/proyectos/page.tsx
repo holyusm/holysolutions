@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ProjectCard } from '@/components/sections/Projects'
-import { PROJECTS } from '@/lib/constants'
+import { PROJECTS, LAUNCH_OFFER } from '@/lib/constants'
 import type { ServiceType } from '@/types'
 
 type FilterType = ServiceType | 'all'
@@ -28,7 +28,7 @@ export default function ProyectosPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1 pt-16">
+      <main className={`flex-1 ${LAUNCH_OFFER.active ? 'pt-[104px]' : 'pt-16'}`}>
         <section className="py-16 md:py-24 bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-10">

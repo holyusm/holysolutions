@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Zap, Menu, X } from 'lucide-react'
 import Link from 'next/link'
-import { buildWhatsAppUrl } from '@/lib/constants'
+import { buildWhatsAppUrl, LAUNCH_OFFER } from '@/lib/constants'
 
 const NAV_LINKS = [
   { label: 'Servicios', href: '/#services' },
@@ -25,9 +25,9 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 bg-white transition-shadow duration-300 ${
-        scrolled ? 'shadow-sm' : ''
-      }`}
+      className={`fixed left-0 right-0 z-40 bg-white transition-shadow duration-300 ${
+        LAUNCH_OFFER.active ? 'top-10' : 'top-0'
+      } ${scrolled ? 'shadow-sm' : ''}`}
     >
       <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">

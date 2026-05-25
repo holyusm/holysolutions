@@ -4,12 +4,37 @@ export const WHATSAPP_NUMBER = '56900000000'
 export const WHATSAPP_DISPLAY = '+56 9 0000 0000'
 export const SITE_URL = 'https://holysolutions.cl'
 
+export const LAUNCH_OFFER = {
+  active: true,
+  discount: 0.25,
+  spotsTotal: 5,
+  validUntil: '31 de julio 2026',
+  label: 'Oferta de lanzamiento',
+}
+
+export function getDiscountedPrice(priceNumeric: number): string {
+  const discounted = Math.round(priceNumeric * (1 - LAUNCH_OFFER.discount))
+  return formatCLP(discounted)
+}
+
+export function formatCLP(amount: number): string {
+  return '$' + amount.toLocaleString('es-CL')
+}
+
 export function buildWhatsAppUrl(message: string): string {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
 }
 
-export function buildPlanWhatsAppUrl(planName: string, serviceType: string, price: string): string {
-  const message = `Hola, me interesa el ${planName} de ${serviceType} por ${price} CLP. ¿Podemos coordinar?`
+export function buildPlanWhatsAppUrl(
+  planName: string,
+  serviceType: string,
+  price: string,
+  discountedPrice?: string,
+): string {
+  const priceText = discountedPrice
+    ? `${discountedPrice} CLP (precio de lanzamiento, original ${price} CLP)`
+    : `${price} CLP`
+  const message = `Hola, me interesa el ${planName} de ${serviceType} por ${priceText}. ¿Podemos coordinar?`
   return buildWhatsAppUrl(message)
 }
 

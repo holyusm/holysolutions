@@ -2,12 +2,22 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Check } from 'lucide-react'
-import { PRICING_TABS, buildPlanWhatsAppUrl } from '@/lib/constants'
+import { Check, Zap } from 'lucide-react'
+import { PRICING_TABS, LAUNCH_OFFER, getDiscountedPrice, buildPlanWhatsAppUrl } from '@/lib/constants'
 import type { PricingPlan, PricingTab } from '@/types'
 
 function PlanCard({ plan, serviceLabel }: { plan: PricingPlan; serviceLabel: string }) {
-  const whatsappUrl = buildPlanWhatsAppUrl(plan.name, serviceLabel, plan.price)
+  const discountedPrice =
+    LAUNCH_OFFER.active && plan.priceNumeric
+      ? getDiscountedPrice(plan.priceNumeric)
+      : undefined
+
+  const whatsappUrl = buildPlanWhatsAppUrl(
+    plan.name,
+    serviceLabel,
+    plan.price,
+    discountedPrice,
+  )
 
   return (
     <div
@@ -17,28 +27,67 @@ function PlanCard({ plan, serviceLabel }: { plan: PricingPlan; serviceLabel: str
           : 'border-gray-100 bg-white hover:border-brand/30 hover:shadow-md'
       }`}
     >
-      {plan.popular && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="bg-amber-400 text-amber-900 text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
+      <div className="flex items-start justify-between gap-2">
+        {plan.popular && (
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-400 text-amber-900 text-xs font-semibold px-3 py-1 rounded-full shadow-sm whitespace-nowrap">
             Más popular
           </span>
-        </div>
-      )}
+        )}
+        {LAUNCH_OFFER.active && !plan.customQuote && (
+          <span
+            className={`absolute -top-3 right-4 flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm ${
+              plan.popular
+                ? 'bg-white text-brand'
+                : 'bg-brand text-white'
+            }`}
+          >
+            <Zap className="w-3 h-3" strokeWidth={2.5} />
+            25% off
+          </span>
+        )}
+      </div>
 
       <div>
-        <h3 className={`font-semibold text-base ${plan.popular ? 'text-white/80' : 'text-gray-500'}`}>
+        <h3
+          className={`font-semibold text-base ${plan.popular ? 'text-white/80' : 'text-gray-500'}`}
+        >
           {plan.name}
         </h3>
+
         {plan.customQuote ? (
-          <p className={`mt-2 text-2xl font-bold tracking-tight ${plan.popular ? 'text-white' : 'text-gray-900'}`}>
+          <p
+            className={`mt-2 text-2xl font-bold tracking-tight ${plan.popular ? 'text-white' : 'text-gray-900'}`}
+          >
             Cotización personalizada
           </p>
+        ) : discountedPrice ? (
+          <div className="mt-2 flex flex-col gap-0.5">
+            <span
+              className={`text-sm line-through ${plan.popular ? 'text-white/50' : 'text-gray-400'}`}
+            >
+              {plan.price} CLP
+            </span>
+            <div className="flex items-baseline gap-1">
+              <span
+                className={`text-3xl font-bold tracking-tight ${plan.popular ? 'text-white' : 'text-gray-900'}`}
+              >
+                {discountedPrice}
+              </span>
+              <span className={`text-sm ${plan.popular ? 'text-white/70' : 'text-gray-400'}`}>
+                CLP
+              </span>
+            </div>
+          </div>
         ) : (
           <div className="mt-2 flex items-baseline gap-1">
-            <span className={`text-3xl font-bold tracking-tight ${plan.popular ? 'text-white' : 'text-gray-900'}`}>
+            <span
+              className={`text-3xl font-bold tracking-tight ${plan.popular ? 'text-white' : 'text-gray-900'}`}
+            >
               {plan.price}
             </span>
-            <span className={`text-sm ${plan.popular ? 'text-white/70' : 'text-gray-400'}`}>CLP</span>
+            <span className={`text-sm ${plan.popular ? 'text-white/70' : 'text-gray-400'}`}>
+              CLP
+            </span>
           </div>
         )}
       </div>
@@ -50,7 +99,9 @@ function PlanCard({ plan, serviceLabel }: { plan: PricingPlan; serviceLabel: str
               className={`w-4 h-4 mt-0.5 shrink-0 ${plan.popular ? 'text-white/80' : 'text-brand'}`}
               strokeWidth={2.5}
             />
-            <span className={`text-sm leading-relaxed ${plan.popular ? 'text-white/90' : 'text-gray-600'}`}>
+            <span
+              className={`text-sm leading-relaxed ${plan.popular ? 'text-white/90' : 'text-gray-600'}`}
+            >
               {feature}
             </span>
           </li>
@@ -113,7 +164,17 @@ export function Pricing() {
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
             Planes y precios
           </h2>
-          <p className="mt-3 text-gray-500">Elige el plan que se adapta a tu negocio</p>
+          {LAUNCH_OFFER.active ? (
+            <div className="mt-3 flex flex-col items-center gap-1.5">
+              <div className="inline-flex items-center gap-2 bg-brand-light text-brand text-sm font-medium px-4 py-1.5 rounded-full">
+                <Zap className="w-3.5 h-3.5" strokeWidth={2.5} />
+                Oferta de lanzamiento: 25% de descuento para los primeros {LAUNCH_OFFER.spotsTotal} clientes
+              </div>
+              <p className="text-gray-400 text-xs">Válido hasta el {LAUNCH_OFFER.validUntil}</p>
+            </div>
+          ) : (
+            <p className="mt-3 text-gray-500">Elige el plan que se adapta a tu negocio</p>
+          )}
         </motion.div>
 
         <div className="flex items-center justify-center mb-10">
