@@ -1,115 +1,102 @@
 'use client'
-
 import { motion } from 'framer-motion'
+import { ArrowUpRight, Plus } from 'lucide-react'
 import Link from 'next/link'
-import { ArrowRight, ExternalLink } from 'lucide-react'
 import { PROJECTS } from '@/lib/constants'
 import type { Project } from '@/types'
 
-const SERVICE_LABELS: Record<string, string> = {
-  landing: 'Landing Page',
-  corporate: 'Sitio Corporativo',
-  ecommerce: 'Tienda Online',
-  software: 'Software a Medida',
-  automation: 'Automatización IA',
-}
-
-const BADGE_COLORS: Record<string, string> = {
-  landing: 'bg-blue-50 text-blue-700',
-  corporate: 'bg-purple-50 text-purple-700',
-  ecommerce: 'bg-green-50 text-green-700',
-  software: 'bg-indigo-50 text-indigo-700',
-  automation: 'bg-amber-50 text-amber-700',
-}
-
 export function ProjectCard({ project }: { project: Project }) {
-  return (
-    <div className="group flex flex-col bg-white rounded-2xl border border-gray-100 overflow-hidden hover:border-gray-200 hover:shadow-lg transition-all duration-300">
-      <div
-        className="h-44 flex items-center justify-center"
-        style={{ backgroundColor: project.bgColor }}
-        aria-hidden="true"
-      >
-        <div className="w-32 h-20 rounded-lg bg-white/60 backdrop-blur-sm flex items-center justify-center shadow-sm">
-          <div className="w-20 h-3 rounded-full bg-white/80" />
-        </div>
+  if (project.visible === false) {
+    return (
+      <div className="hs-project-placeholder">
+        <Plus className="w-5 h-5 opacity-40" />
+        <span>Próximo proyecto</span>
       </div>
+    )
+  }
 
-      <div className="flex flex-col gap-3 p-5 flex-1">
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <h3 className="font-semibold text-gray-900 text-sm">{project.name}</h3>
-            <p className="text-xs text-gray-400 mt-0.5">{project.client}</p>
-          </div>
-          <span
-            className={`shrink-0 text-xs font-medium px-2 py-0.5 rounded-full ${BADGE_COLORS[project.type]}`}
-          >
-            {SERVICE_LABELS[project.type]}
-          </span>
+  return (
+    <div className="hs-project-card">
+      <div className="hs-project-thumb" style={{ background: project.bgColor }}>
+        <span style={{ fontSize: '13px', fontWeight: 700, color: project.accent ?? '#374151', letterSpacing: '-0.01em', textAlign: 'center', padding: '0 16px' }}>
+          {project.name}
+        </span>
+      </div>
+      <div className="hs-project-body">
+        <div className="flex items-center justify-between gap-2">
+          <h3 className="hs-h4">{project.name}</h3>
+          {project.url && (
+            <a href={project.url} target="_blank" rel="noopener noreferrer" className="hs-icon-btn shrink-0" aria-label="Ver proyecto">
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
+          )}
         </div>
-
-        <p className="text-sm text-gray-500 leading-relaxed">{project.description}</p>
-
-        <div className="flex flex-wrap gap-1.5 mt-auto">
-          {project.technologies.map((tech) => (
-            <span
-              key={tech}
-              className="text-xs text-gray-500 bg-gray-50 px-2 py-0.5 rounded-md border border-gray-100"
-            >
-              {tech}
-            </span>
+        <p className="hs-p-sm" style={{ marginTop: 4 }}>{project.description}</p>
+        <div className="flex flex-wrap gap-1.5" style={{ marginTop: 8 }}>
+          {project.technologies.map(t => (
+            <span key={t} className="hs-tech-tag">{t}</span>
           ))}
         </div>
-
-        <button
-          disabled
-          className="mt-2 flex items-center gap-1.5 text-sm font-medium text-gray-400 cursor-not-allowed"
-          aria-disabled="true"
-        >
-          <ExternalLink className="w-3.5 h-3.5" />
-          Ver proyecto
-        </button>
       </div>
     </div>
   )
 }
 
 export function Projects() {
-  const featured = PROJECTS.slice(0, 6)
+  const featured = PROJECTS.find(p => p.featured)
+  const rest = PROJECTS.filter(p => !p.featured)
 
   return (
-    <section id="projects" className="py-20 md:py-28 bg-[#f8f9fa]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10"
-        >
-          <div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
-              Proyectos recientes
-            </h2>
-            <p className="mt-2 text-gray-500">Algunos de los proyectos que hemos construido</p>
-          </div>
-          <Link
-            href="/proyectos"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:gap-2.5 transition-all duration-200 shrink-0"
-          >
-            Ver todos
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </motion.div>
+    <section id="projects" className="hs-section">
+      <div className="hs-container">
+        <div className="hs-section-head">
+          <span className="hs-eyebrow">Proyectos</span>
+          <h2 className="hs-h2">Lo que hemos construido</h2>
+          <p className="hs-lead">Una muestra real de nuestro trabajo.</p>
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {featured.map((project, index) => (
+        {featured && (
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-6"
+          >
+            <div className="hs-project-featured">
+              <div className="hs-project-featured-body">
+                <span className="hs-tag">Proyecto destacado</span>
+                <h3 className="hs-h3">{featured.name}</h3>
+                <p className="hs-p">{featured.description}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {featured.technologies.map(t => (
+                    <span key={t} className="hs-tech-tag">{t}</span>
+                  ))}
+                </div>
+                {featured.url && (
+                  <a href={featured.url} target="_blank" rel="noopener noreferrer" className="hs-btn hs-btn--secondary" style={{ width: 'fit-content' }}>
+                    Ver sitio <ArrowUpRight className="w-4 h-4" />
+                  </a>
+                )}
+              </div>
+              <div className="hs-project-featured-visual">
+                <div>
+                  <div className="hs-tjt-logo">TAJ<br />TAJ</div>
+                  <div className="hs-tjt-sub">Transportes · Carga Pesada</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        <div className="hs-grid-3">
+          {rest.map((project, i) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.4, delay: index * 0.06 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1], delay: i * 0.06 }}
             >
               <ProjectCard project={project} />
             </motion.div>
@@ -117,18 +104,14 @@ export function Projects() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          className="text-center mt-10"
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="mt-10 text-center"
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
         >
-          <Link
-            href="/proyectos"
-            className="inline-flex items-center gap-2 border border-gray-200 hover:border-brand hover:text-brand text-gray-700 font-medium px-6 py-3 rounded-xl transition-colors duration-200"
-          >
+          <Link href="/proyectos" className="hs-btn hs-btn--secondary">
             Ver todos los proyectos
-            <ArrowRight className="w-4 h-4" />
           </Link>
         </motion.div>
       </div>

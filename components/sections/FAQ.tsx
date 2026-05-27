@@ -3,7 +3,9 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Minus } from 'lucide-react'
-import { FAQ_ITEMS } from '@/lib/constants'
+import { FAQ_TABS } from '@/lib/constants'
+
+const FAQ_ITEMS = FAQ_TABS.flatMap((tab) => tab.items.map((item) => ({ question: item.q, answer: item.a })))
 
 function FAQItem({
   question,

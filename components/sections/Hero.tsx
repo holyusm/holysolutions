@@ -1,179 +1,311 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight, MessageCircle } from 'lucide-react'
+import { Zap, Check, Clock } from 'lucide-react'
+import Link from 'next/link'
 import { buildWhatsAppUrl } from '@/lib/constants'
 
-function BrowserMockup() {
+const WA_ICON = (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4" aria-hidden="true">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+  </svg>
+)
+
+const TRUST_ITEMS = [
+  'Stack moderno',
+  'Precio en CLP',
+  '100% remoto',
+  'Sansanos USM',
+] as const
+
+type TermLine =
+  | { type: 'blank' }
+  | { type: 'code'; nodes: React.ReactNode }
+
+function G({ n }: { n: number }) {
+  return <span className="hs-term-gutter">{n}</span>
+}
+
+function TerminalCode() {
+  const lines: TermLine[] = [
+    {
+      type: 'code',
+      nodes: (
+        <>
+          <span className="hs-syn-key">import</span>
+          {' { '}
+          <span className="hs-syn-fn">HolySolutions</span>
+          {' } '}
+          <span className="hs-syn-key">from</span>
+          {' '}
+          <span className="hs-syn-str">'./stack'</span>
+        </>
+      ),
+    },
+    {
+      type: 'code',
+      nodes: (
+        <>
+          <span className="hs-syn-key">import</span>
+          {' '}
+          <span className="hs-syn-key">type</span>
+          {' { '}
+          <span className="hs-syn-fn">Proyecto</span>
+          {' } '}
+          <span className="hs-syn-key">from</span>
+          {' '}
+          <span className="hs-syn-str">'./types'</span>
+        </>
+      ),
+    },
+    { type: 'blank' },
+    {
+      type: 'code',
+      nodes: (
+        <>
+          <span className="hs-syn-key">const</span>
+          {' config: '}
+          <span className="hs-syn-fn">Proyecto</span>
+          {' = {'}
+        </>
+      ),
+    },
+    {
+      type: 'code',
+      nodes: (
+        <>
+          {'  '}
+          <span className="hs-syn-prop">tipo</span>
+          {':     '}
+          <span className="hs-syn-str">'landing'</span>
+          {','}
+        </>
+      ),
+    },
+    {
+      type: 'code',
+      nodes: (
+        <>
+          {'  '}
+          <span className="hs-syn-prop">plazo</span>
+          {':    '}
+          <span className="hs-syn-str">'7 días hábiles'</span>
+          {','}
+        </>
+      ),
+    },
+    {
+      type: 'code',
+      nodes: (
+        <>
+          {'  '}
+          <span className="hs-syn-prop">precio</span>
+          {':   '}
+          <span className="hs-syn-str">'$150.000 CLP'</span>
+          {','}
+        </>
+      ),
+    },
+    {
+      type: 'code',
+      nodes: (
+        <>
+          {'  '}
+          <span className="hs-syn-prop">cliente</span>
+          {':  '}
+          <span className="hs-syn-str">'Mi Empresa SpA'</span>
+          {','}
+        </>
+      ),
+    },
+    {
+      type: 'code',
+      nodes: <>{'}'}</>,
+    },
+    { type: 'blank' },
+    {
+      type: 'code',
+      nodes: (
+        <>
+          <span className="hs-syn-com">{'// Lanzamos en producción'}</span>
+        </>
+      ),
+    },
+    {
+      type: 'code',
+      nodes: (
+        <>
+          <span className="hs-syn-key">const</span>
+          {' sitio = '}
+          <span className="hs-syn-key">await</span>
+          {' '}
+          <span className="hs-syn-fn">HolySolutions</span>
+        </>
+      ),
+    },
+    {
+      type: 'code',
+      nodes: (
+        <>
+          {'  .'}
+          <span className="hs-syn-fn">build</span>
+          {'(config)'}
+        </>
+      ),
+    },
+    { type: 'blank' },
+    {
+      type: 'code',
+      nodes: (
+        <>
+          <span className="hs-syn-com">{'// ✓ Deploy → holysolutions.cl'}</span>
+          <span className="hs-term-cursor" />
+        </>
+      ),
+    },
+  ]
+
   return (
-    <svg
-      viewBox="0 0 480 320"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-full h-full"
-    >
-      <rect width="480" height="320" rx="12" fill="#F8F9FA" />
-      <rect width="480" height="32" rx="12" fill="#E5E7EB" />
-      <rect y="20" width="480" height="12" fill="#E5E7EB" />
-      <circle cx="16" cy="16" r="5" fill="#FF5F57" />
-      <circle cx="32" cy="16" r="5" fill="#FEBC2E" />
-      <circle cx="48" cy="16" r="5" fill="#28C840" />
-      <rect x="72" y="9" width="280" height="14" rx="7" fill="#FFFFFF" />
-      <rect x="80" y="48" width="320" height="14" rx="4" fill="#4F46E5" opacity="0.15" />
-      <rect x="80" y="70" width="240" height="10" rx="3" fill="#E5E7EB" />
-      <rect x="80" y="88" width="200" height="10" rx="3" fill="#E5E7EB" />
-      <rect x="80" y="112" width="96" height="28" rx="6" fill="#4F46E5" />
-      <rect x="184" y="112" width="80" height="28" rx="6" fill="#EEF2FF" />
-      <rect x="80" y="156" width="320" height="120" rx="8" fill="#EEF2FF" />
-      <rect x="96" y="172" width="288" height="8" rx="3" fill="#C7D2FE" />
-      <rect x="96" y="188" width="240" height="8" rx="3" fill="#C7D2FE" />
-      <rect x="96" y="204" width="200" height="8" rx="3" fill="#C7D2FE" />
-      <circle cx="320" cy="220" r="28" fill="#4F46E5" opacity="0.08" />
-      <rect x="96" y="220" width="160" height="8" rx="3" fill="#C7D2FE" />
-      <rect x="96" y="236" width="120" height="8" rx="3" fill="#C7D2FE" />
-      <rect x="80" y="292" width="320" height="6" rx="3" fill="#E5E7EB" />
-    </svg>
+    <div className="hs-term-body">
+      {lines.map((line, i) => (
+        <div className="hs-term-line" key={i}>
+          <G n={i + 1} />
+          {line.type === 'code' ? <span>{line.nodes}</span> : null}
+        </div>
+      ))}
+    </div>
   )
 }
 
-const fadeUpProps = (delay: number) => ({
-  initial: { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] as const },
-})
-
 export function Hero() {
   return (
-    <section className="relative overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle at 20% 50%, #eef2ff 0%, transparent 60%), radial-gradient(circle at 80% 20%, #f0fdf4 0%, transparent 50%)',
-        }}
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage:
-            'linear-gradient(#4f46e5 1px, transparent 1px), linear-gradient(to right, #4f46e5 1px, transparent 1px)',
-          backgroundSize: '48px 48px',
-        }}
-        aria-hidden="true"
-      />
+    <section className="hs-hero">
+      <div className="hs-hero-bg" aria-hidden="true" />
+      <div className="hs-hero-grid" aria-hidden="true" />
 
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <div className="flex flex-col gap-6">
-            <motion.div
-              {...fadeUpProps(0)}
-              className="inline-flex items-center gap-2 bg-brand-light text-brand text-xs font-medium px-3 py-1.5 rounded-full w-fit"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
-              Desarrollo web para pymes chilenas
-            </motion.div>
+      <div className="hs-container">
+        <div className="hs-hero-inner">
 
-            <motion.h1
-              {...fadeUpProps(0.1)}
-              className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight tracking-tight"
-            >
-              Llevamos tu negocio
-              <span className="text-brand"> al mundo digital</span>
-            </motion.h1>
+          {/* LEFT: copy */}
+          <motion.div
+            className="hs-hero-copy"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {/* Eyebrow */}
+            <span className="hs-eyebrow">
+              <span
+                className="hs-pulse-dot"
+                style={{
+                  display: 'inline-block',
+                  width: 7,
+                  height: 7,
+                  borderRadius: '50%',
+                  background: 'var(--success)',
+                  flexShrink: 0,
+                }}
+                aria-hidden="true"
+              />
+              Disponible para nuevos proyectos
+            </span>
 
-            <motion.p
-              {...fadeUpProps(0.2)}
-              className="text-lg text-gray-500 leading-relaxed"
-            >
-              Creamos páginas web, tiendas online y software a medida para
-              empresas y emprendimientos en Chile. Rápido, profesional y sin complicaciones.
-            </motion.p>
+            {/* Headline */}
+            <h1 className="hs-h1">
+              Tu negocio, online y funcionando
+            </h1>
 
-            <motion.div
-              {...fadeUpProps(0.3)}
-              className="flex flex-col sm:flex-row gap-3"
-            >
-              <a
-                href="#services"
-                className="inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white font-medium px-6 py-3 rounded-xl transition-colors duration-200"
-              >
-                Ver servicios
-                <ArrowRight className="w-4 h-4" />
-              </a>
+            {/* Lead */}
+            <p className="hs-lead">
+              Somos sansanos USM. Construimos páginas web, tiendas online y software a medida para
+              pymes y emprendimientos en Chile. Rápido, profesional y sin letras chicas.
+            </p>
+
+            {/* CTAs */}
+            <div className="hs-hero-ctas">
+              <Link href="/#cotizador" className="hs-btn hs-btn--primary hs-btn--lg">
+                <Zap className="w-4 h-4" aria-hidden="true" />
+                Cotizar gratis
+              </Link>
               <a
                 href={buildWhatsAppUrl('Hola Holy Solutions, quiero cotizar mi proyecto.')}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-white border border-gray-200 hover:border-brand hover:text-brand text-gray-700 font-medium px-6 py-3 rounded-xl transition-colors duration-200"
+                className="hs-btn hs-btn--secondary hs-btn--lg"
               >
-                <MessageCircle className="w-4 h-4" />
-                Cotizar ahora
+                {WA_ICON}
+                Hablar por WhatsApp
               </a>
-            </motion.div>
-
-            <motion.div
-              {...fadeUpProps(0.4)}
-              className="flex items-center gap-4 pt-2"
-            >
-              <div className="flex -space-x-2">
-                {['#4F46E5', '#059669', '#DC2626', '#D97706'].map((color, i) => (
-                  <div
-                    key={i}
-                    className="w-8 h-8 rounded-full border-2 border-white"
-                    style={{ backgroundColor: color }}
-                  />
-                ))}
-              </div>
-              <p className="text-sm text-gray-500">
-                <span className="font-semibold text-gray-900">+40 clientes</span> satisfechos en Chile
-              </p>
-            </motion.div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 32 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
-            className="relative hidden lg:block"
-          >
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-brand/10 border border-gray-100">
-              <BrowserMockup />
             </div>
-            <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full bg-brand/5 blur-2xl" />
-            <div className="absolute -bottom-4 -left-4 w-32 h-32 rounded-full bg-green-500/5 blur-2xl" />
 
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.4 }}
-              className="absolute -bottom-4 -left-6 bg-white rounded-xl shadow-lg border border-gray-100 px-4 py-3 flex items-center gap-3"
-            >
-              <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center">
-                <svg viewBox="0 0 24 24" fill="#059669" className="w-4 h-4" aria-hidden="true">
-                  <path
-                    fillRule="evenodd"
-                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+            {/* Trustbar */}
+            <div className="hs-trustbar">
+              {TRUST_ITEMS.map((item, i) => (
+                <>
+                  {i > 0 && <span className="hs-trustbar-dot" aria-hidden="true" />}
+                  <span className="hs-trustbar-item" key={item}>
+                    <span className="hs-trustbar-icon">
+                      <Check className="w-3 h-3" aria-hidden="true" />
+                    </span>
+                    {item}
+                  </span>
+                </>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* RIGHT: terminal */}
+          <motion.div
+            className="hs-terminal-wrap hidden lg:block"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="hs-terminal">
+              <div className="hs-term-tabbar">
+                <div className="hs-term-dots">
+                  <span className="hs-term-dot" />
+                  <span className="hs-term-dot" />
+                  <span className="hs-term-dot" />
+                </div>
+                <span className="hs-term-tab is-active">proyecto.ts</span>
               </div>
+              <TerminalCode />
+            </div>
+
+            {/* Stat: top-right */}
+            <motion.div
+              className="hs-hero-stat hs-hero-stat--tr"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <span className="hs-hero-stat-icon">
+                <Clock className="w-4 h-4" aria-hidden="true" />
+              </span>
               <div>
-                <p className="text-xs font-semibold text-gray-900">Proyecto entregado</p>
-                <p className="text-xs text-gray-500">en 7 días hábiles</p>
+                <p className="hs-hero-stat-title">Respuesta</p>
+                <p className="hs-hero-stat-val">{'< 24 horas'}</p>
               </div>
             </motion.div>
 
+            {/* Stat: bottom-left */}
             <motion.div
-              initial={{ opacity: 0, y: -16 }}
+              className="hs-hero-stat hs-hero-stat--bl"
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9, duration: 0.4 }}
-              className="absolute -top-4 -right-6 bg-white rounded-xl shadow-lg border border-gray-100 px-4 py-3"
+              transition={{ duration: 0.4, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              <p className="text-xs font-semibold text-gray-900">Respuesta en</p>
-              <p className="text-lg font-bold text-brand">24 horas</p>
+              <span className="hs-hero-stat-icon">
+                <Check className="w-4 h-4" aria-hidden="true" />
+              </span>
+              <div>
+                <p className="hs-hero-stat-title">Proyectos entregados</p>
+                <p className="hs-hero-stat-val">En tiempo</p>
+              </div>
             </motion.div>
           </motion.div>
+
         </div>
       </div>
     </section>

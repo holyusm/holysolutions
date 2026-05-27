@@ -4,13 +4,34 @@ export type ServiceType =
   | 'ecommerce'
   | 'software'
   | 'automation'
+  | 'maintenance'
+  | 'seo'
+  | 'migration'
+  | 'consulting'
+
+export interface NavLink {
+  label: string
+  href: string
+}
+
+export interface Social {
+  id: string
+  label: string
+  href: string
+}
 
 export interface Service {
-  id: ServiceType
+  id: string
   name: string
   description: string
   startingPrice: string
   iconName: string
+}
+
+export interface PorQueItem {
+  iconName: string
+  title: string
+  body: string
 }
 
 export interface PricingFeature {
@@ -32,15 +53,44 @@ export interface PricingTab {
   plans: PricingPlan[]
 }
 
+export interface MaintPlan {
+  name: string
+  priceNumeric: number
+  features: string[]
+  popular?: boolean
+}
+
+export interface Addon {
+  id: string
+  label: string
+  sub: string
+  priceNumeric: number
+  recurring: boolean
+}
+
 export interface Project {
-  id: number
+  id: string
   name: string
   client: string
   type: ServiceType
-  typeLabel: string
   description: string
   technologies: string[]
   bgColor: string
+  url?: string
+  accent?: string
+  featured?: boolean
+  visible?: boolean
+}
+
+export interface FaqTabItem {
+  q: string
+  a: string
+}
+
+export interface FaqTab {
+  id: string
+  label: string
+  items: FaqTabItem[]
 }
 
 export interface FaqItem {
@@ -52,6 +102,17 @@ export interface Step {
   number: string
   title: string
   description: string
+}
+
+export interface WizardOption {
+  id: string
+  label: string
+}
+
+export interface WizardOptions {
+  servicio: WizardOption[]
+  presupuesto: WizardOption[]
+  cuando: WizardOption[]
 }
 
 export interface QuoteFormData {
