@@ -1,52 +1,49 @@
 'use client'
-
 import { motion } from 'framer-motion'
-import { STEPS } from '@/lib/constants'
+import { STEPS, buildWhatsAppUrl } from '@/lib/constants'
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-20 md:py-28 bg-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          className="text-center mb-14"
-        >
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
-            Trabajar con nosotros es simple
-          </h2>
-          <p className="mt-3 text-gray-500">Solo 3 pasos para tener tu proyecto listo</p>
-        </motion.div>
-
-        <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
-          <div
-            className="hidden md:block absolute top-8 left-[calc(16.67%+24px)] right-[calc(16.67%+24px)] h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"
-            aria-hidden="true"
-          />
-
-          {STEPS.map((step, index) => (
+    <section id="how" className="hs-section">
+      <div className="hs-container">
+        <div className="hs-section-head is-center">
+          <span className="hs-eyebrow">Cómo trabajamos</span>
+          <h2 className="hs-h2">Simple y sin vueltas</h2>
+          <p className="hs-lead">De la idea al lanzamiento en tres pasos.</p>
+        </div>
+        <div className="hs-steps">
+          {STEPS.map((step, i) => (
             <motion.div
               key={step.number}
-              initial={{ opacity: 0, y: 24 }}
+              className="hs-step"
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="relative flex flex-col items-center text-center gap-4"
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-brand text-white font-bold text-lg shadow-lg shadow-brand/25">
-                {step.number}
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <h3 className="font-semibold text-gray-900 text-base">{step.title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed max-w-xs mx-auto">
-                  {step.description}
-                </p>
-              </div>
+              <span className="hs-step-num">{step.number}</span>
+              <h3 className="hs-h4">{step.title}</h3>
+              <p className="hs-p-sm">{step.description}</p>
+              <span className="hs-step-line" aria-hidden="true" />
             </motion.div>
           ))}
         </div>
+        <motion.div
+          className="text-center mt-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.3, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <a
+            href={buildWhatsAppUrl('Hola Holy Solutions, quiero empezar un proyecto.')}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hs-btn hs-btn--primary"
+          >
+            Empezar ahora
+          </a>
+        </motion.div>
       </div>
     </section>
   )
