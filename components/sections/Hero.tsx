@@ -1,5 +1,6 @@
 'use client'
 
+import { Fragment } from 'react'
 import { motion } from 'framer-motion'
 import { Zap, Check, Clock } from 'lucide-react'
 import Link from 'next/link'
@@ -193,23 +194,6 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Eyebrow */}
-            <span className="hs-eyebrow">
-              <span
-                className="hs-pulse-dot"
-                style={{
-                  display: 'inline-block',
-                  width: 7,
-                  height: 7,
-                  borderRadius: '50%',
-                  background: 'var(--success)',
-                  flexShrink: 0,
-                }}
-                aria-hidden="true"
-              />
-              Disponible para nuevos proyectos
-            </span>
-
             {/* Headline */}
             <h1 className="hs-h1">
               Tu negocio, online y funcionando
@@ -241,15 +225,15 @@ export function Hero() {
             {/* Trustbar */}
             <div className="hs-trustbar">
               {TRUST_ITEMS.map((item, i) => (
-                <>
+                <Fragment key={item}>
                   {i > 0 && <span className="hs-trustbar-dot" aria-hidden="true" />}
-                  <span className="hs-trustbar-item" key={item}>
+                  <span className="hs-trustbar-item">
                     <span className="hs-trustbar-icon">
                       <Check className="w-3 h-3" aria-hidden="true" />
                     </span>
                     {item}
                   </span>
-                </>
+                </Fragment>
               ))}
             </div>
           </motion.div>

@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
 /* ===== Tailwind v4: CSS vars → Tailwind tokens ===== */
 @theme inline {
@@ -318,13 +317,10 @@
   /* ----- Navbar ----- */
   .hs-nav {
     position: fixed; left: 0; right: 0; z-index: 50;
-    background: color-mix(in srgb, var(--bg) 85%, transparent);
-    backdrop-filter: saturate(180%) blur(12px);
-    -webkit-backdrop-filter: saturate(180%) blur(12px);
-    border-bottom: 1px solid transparent;
-    transition: border-color .2s, background-color .2s, top .25s;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    transition: top .25s;
   }
-  .hs-nav.is-scrolled { border-bottom-color: var(--border); }
   .hs-nav-inner {
     max-width: var(--container-max); margin: 0 auto; padding: 0 20px;
     display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 68px;
@@ -360,10 +356,10 @@
 
   /* ----- Hero ----- */
   .hs-hero {
-    padding-top: 128px; padding-bottom: var(--section-pad);
+    padding-top: 48px; padding-bottom: var(--section-pad);
     position: relative; overflow: hidden;
   }
-  @media (min-width: 1024px) { .hs-hero { padding-top: 152px; } }
+  @media (min-width: 1024px) { .hs-hero { padding-top: 30px; } }
   .hs-hero-bg {
     position: absolute; inset: 0; pointer-events: none; opacity: .9;
     background:
